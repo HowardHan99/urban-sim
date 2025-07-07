@@ -23,6 +23,7 @@
 
 ## Table of Contents
 - [URBANSIM](#-towards-autonomous-micromobility-through-scalable-urban-simulation)
+  - [📎 Citation](#-citation)
   - [🛠 Getting Started](#-getting-started)
     - [Hardware Recommendations](#hardware-recommendations)
     - [Installation](#installation)
@@ -30,7 +31,6 @@
     - [Asynchronous Navigation Environment](#asynchronous-navigation-environment)
   - [🚀 Reinforcement Learning](#-reinforcement-learning)
   - [📖 Questions and Support](#-questions-and-support)
-  - [📎 Citation](#-citation)
 
 ## 📎 Citation
 
