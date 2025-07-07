@@ -32,6 +32,19 @@
   - [📖 Questions and Support](#-questions-and-support)
   - [📎 Citation](#-citation)
 
+## 📎 Citation
+
+If you find URBAN-SIM helpful for your research, please cite the following BibTeX entry.
+
+```latex
+@ inproceedings{wu2025urbansim,
+title={Towards Autonomous Micromobility through Scalable Urban Simulation},
+author={Wu, Wayne and He, Honglin and Zhang, Chaoyuan and He, Jack and Zhao, Seth Z. and Gong, Ran and Li, Quanyi and Zhou, Bolei},
+booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},
+year={2025}
+}
+```
+
 ## 🛠 Getting Started
 
 ### Hardware Recommendations
@@ -181,15 +194,4 @@ The simulator can not be built without the help from Panda3D community and the f
 - DiamondSquare for terrain generation: https://github.com/buckinha/DiamondSquare
 - KITSUNETSUKI-Asset-Tools: https://github.com/kitsune-ONE-team/KITSUNETSUKI-Asset-Tools
 
-## 📎 Citation
 
-If you find URBAN-SIM helpful for your research, please cite the following BibTeX entry.
-
-```latex
-@ inproceedings{wu2025urbansim,
-title={Towards Autonomous Micromobility through Scalable Urban Simulation},
-author={Wu, Wayne and He, Honglin and Zhang, Chaoyuan and He, Jack and Zhao, Seth Z. and Gong, Ran and Li, Quanyi and Zhou, Bolei},
-booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},
-year={2025}
-}
-```
