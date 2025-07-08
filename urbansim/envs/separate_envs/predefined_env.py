@@ -84,7 +84,7 @@ from isaaclab.assets import RigidObject, RigidObjectCfg
 
 from urbansim.scene.urban_scene_cfg import UrbanSceneCfg
 from urbansim.envs.abstract_env import AbstractEnv
-from urbansim.primitives.navigation.random_static import ObservationsCfg, RewardsCfg, TerminationsCfg, CommandsCfg, EventCfg, CurriculumCfg
+from urbansim.primitives.navigation.random_env_cfg import ObservationsCfg, RewardsCfg, TerminationsCfg, CommandsCfg, EventCfg, CurriculumCfg
 from urbansim.primitives.robot.coco import COCO_CFG, COCOVelocityActionsCfg, COCONavModifyEnv
 
 ROBOT = COCO_CFG
