@@ -86,11 +86,10 @@ from urbansim.scene.urban_scene_cfg import UrbanSceneCfg
 from urbansim.envs.abstract_env import AbstractEnv
 from urbansim.primitives.navigation.random_static import ObservationsCfg, RewardsCfg, TerminationsCfg, CommandsCfg, EventCfg, CurriculumCfg
 from urbansim.primitives.robot.coco import COCO_CFG, COCOVelocityActionsCfg, COCONavModifyEnv
-from urbansim.primitives.robot.wheelchair_nodynamics import WheelChairCfg, WheelChairMovingActionsCfg, WheelChairNavModifyEnv
 
-ROBOT = WheelChairCfg
-ACTION = WheelChairMovingActionsCfg
-MODIFY = WheelChairNavModifyEnv
+ROBOT = COCO_CFG
+ACTION = COCOVelocityActionsCfg
+MODIFY = COCONavModifyEnv
 
 """
 Define the Urban Scene
