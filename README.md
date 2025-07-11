@@ -177,7 +177,7 @@ Can't find the answer to your question? Try posting issues or asking the develop
 - [ ] Lightweight pipeline for scenario & environment generation.
 
 ## 💘 Acknowledgement
-The simulator can not be built without the help from Panda3D community and the following open-sourced projects:
+The simulator can not be built without the help from the following open-sourced projects:
 - Omniverse: https://www.nvidia.com/en-us/omniverse/
 - IsaacSim: https://developer.nvidia.com/isaac/sim
 - IsaacLab: https://github.com/isaac-sim/IsaacLab
