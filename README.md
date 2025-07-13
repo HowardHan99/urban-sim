@@ -16,11 +16,11 @@
 
 **`URBAN-SIM`** is a large-scale robot learning platform for urban spaces, built on NVIDIA Omniverse. Train robots at scale in rich, interactive city environments. It offers:
 
-⚡️ High Efficiency: Thousands of FPS on a single GPU -- enabling fast robot training.
-📈 Scalable RL Training: Add more GPUs, scale up performance (FPS) continuously.
-🏙️ Rich Scene Context: Infinite scene generation -- supporting tasks like visual locomotion, navigation, VLA training, and robot-human-scene interaction.
-🎮 Versatile Interfaces. Collect data via VR headset, racing wheel, keyboard, or mouse for imitation learning.
-🧩 Ecosystem Compatibility: Built on NVIDIA Omniverse, IsaacSim, and PhysX.
+- ⚡️ High Efficiency: Thousands of FPS on a single GPU -- enabling fast robot training.
+- 📈 Scalable RL Training: Add more GPUs, scale up performance (FPS) continuously.
+- 🏙️ Rich Scene Context: Infinite scene generation -- supporting tasks like visual locomotion, navigation, VLA training, and robot-human-scene interaction.
+- 🎮 Versatile Interfaces. Collect data via VR headset, racing wheel, keyboard, or mouse for imitation learning.
+- 🧩 Ecosystem Compatibility: Built on NVIDIA Omniverse, IsaacSim, and PhysX.
 
 📖 Check out [**`URBAN-SIM` Documentation**](https://metadriverse.github.io/urban-sim/docs) to learn more!
 
