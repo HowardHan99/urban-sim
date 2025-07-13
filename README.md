@@ -26,7 +26,7 @@
 
 
 <p align="center">
-  <img src="documentation/assets/teaser.gif" alt="Urban-Sim Teaser"  width="640">
+  <img src="documentation/assets/teaser.gif" alt="Urban-Sim Teaser"  width="720">
 </p>
 
 
