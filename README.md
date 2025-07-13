@@ -1,8 +1,5 @@
 # Towards Autonomous Micromobility through Scalable Urban Simulation
 
-<p align="center">
-  <img src="documentation/assets/teaser.gif" alt="Urban-Sim Teaser"  width="640">
-</p>
 
 [![Static Badge](https://img.shields.io/badge/URBANSIM-arxiv-blue)](https://arxiv.org/pdf/2505.00690.pdf)
 [![GitHub license](https://img.shields.io/github/license/metadriverse/urban-sim)](https://github.com/metadriverse/urban-sim/blob/main/LICENSE.txt)
@@ -16,6 +13,22 @@
     <a href="https://metadriverse.github.io/">Relevant Projects</a> ]
   </strong>
 </div>
+
+**`URBAN-SIM`** is a large-scale robot learning platform for urban spaces, built on NVIDIA Omniverse. Train robots at scale in rich, interactive city environments. It offers:
+
+⚡️ High Efficiency: Thousands of FPS on a single GPU -- enabling fast robot training.
+📈 Scalable RL Training: Add more GPUs, scale up performance (FPS) continuously.
+🏙️ Rich Scene Context: Infinite scene generation -- supporting tasks like visual locomotion, navigation, VLA training, and robot-human-scene interaction.
+🎮 Versatile Interfaces. Collect data via VR headset, racing wheel, keyboard, or mouse for imitation learning.
+🧩 Ecosystem Compatibility: Built on NVIDIA Omniverse, IsaacSim, and PhysX.
+
+📖 Check out [**`URBAN-SIM` Documentation**](https://metadriverse.github.io/urban-sim/docs) to learn more!
+
+
+<p align="center">
+  <img src="documentation/assets/teaser.gif" alt="Urban-Sim Teaser"  width="640">
+</p>
+
 
 
 ## Latest Updates
