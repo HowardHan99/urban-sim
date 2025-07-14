@@ -174,7 +174,7 @@ python urbansim/learning/RL/play.py --env configs/env_configs/navigation/coco.ya
 
 This will launch a single environment with camera views enabled, using a pretrained navigation policy in a static urban scene.
 
-We plan to support more pretrained checkpoints and diverse environments in upcoming releases. Please stay tuned !
+We plan to support more pretrained checkpoints and diverse environments in upcoming releases. Please stay tuned!
 
 ## 📖 Questions and Support
 
