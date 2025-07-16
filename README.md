@@ -187,6 +187,7 @@ Can't find the answer to your question? Try posting issues or asking the develop
 - [ ] Release checkpoints for more robots (Booster T1, Unitree G1, ...)
 - [ ] Release reactive environmental agents via ORCA -> IDM-JAX.
 - [ ] Release useful scripts for downstream tasks such as data generation for imitation learning, instance/appearance randomization for reinforcement learning.
+- [ ] Urban locomotion environment.
 - [ ] Lightweight pipeline for scenario & environment generation.
 
 ## 💘 Acknowledgement
