@@ -1,3 +1,6 @@
+![](documentation/assets/logo.png)
+
+
 # Towards Autonomous Micromobility through Scalable Urban Simulation
 
 
