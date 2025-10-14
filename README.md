@@ -74,22 +74,22 @@ To ensure the best experience with **URBAN-SIM**, please review the following ha
   - **Storage**: Minimum of **50GB free space**.  
 
 ### Installation
-#### 1. Install IsaacSim 4.5
+#### 1. Install IsaacSim 5
 ```bash
 # Clone the repository
 git clone -b main --depth 1 https://github.com/metadriverse/urban-sim.git
 cd urban-sim
 
-# Install Isaacsim 4.5 by following: https://docs.isaacsim.omniverse.nvidia.com/4.5.0/installation/install_workstation.html
-# Download official file from: 
-# https://download.isaacsim.omniverse.nvidia.com/isaac-sim-standalone%404.5.0-rc.36%2Brelease.19112.f59b3005.gl.linux-x86_64.release.zip
-mkdir ${HOME}/isaacsim
-cd ~/Downloads
-unzip "isaac-sim-standalone@4.5.0-rc.36+release.19112.f59b3005.gl.linux-x86_64.release.zip" -d ${HOME}/isaacsim
+# Install Isaacsim 5.x from github repo: https://github.com/isaac-sim/IsaacSim
+suppose that you install it in:
+# ${HOME}/IsaacSim/
+and the builded software in:
+# _build/linux-x86_64/release
+Then try:
 cd ~/urban-sim
-ln -s ${HOME}/isaacsim ./_isaac_sim
+ln -s ${HOME}/IsaacSim/_build/linux-x86_64/release/isaacsim ./_isaac_sim
 # Isaac Sim root directory
-export ISAACSIM_PATH="${HOME}/isaacsim"
+export ISAACSIM_PATH="${HOME}/IsaacSim/_build/linux-x86_64/release/isaacsim"
 # Isaac Sim python executable
 export ISAACSIM_PYTHON_EXE="${ISAACSIM_PATH}/python.sh"
 # note: you can pass the argument "--help" to see all arguments possible.
