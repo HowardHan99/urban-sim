@@ -125,6 +125,7 @@ def main():
 
     file_names = [f for f in file_names_parent if '.glb' in f] 
     file_goes = [f.replace('glb', 'usd').replace('assets/objects', 'assets/usds') for f in file_names]
+    file_parameters = os.listdir(os.path.join(ROOT_DIR, 'assets', 'adj_parameter_folder'))
     
     if args_cli.mass is not None:
         mass_props = schemas_cfg.MassPropertiesCfg(mass=args_cli.mass)
@@ -138,7 +139,15 @@ def main():
     collision_props = schemas_cfg.CollisionPropertiesCfg(collision_enabled=args_cli.collision_approximation != "none")
     
     mesh_converters_cfgs = []
+    import json
     for mesh_path, mesh_go in zip(file_names, file_goes):
+        for json_f in file_parameters:
+            if mesh_path.split('.')[0].split('_')[-1] in json_f:
+                with open(os.path.join(ROOT_DIR, 'assets', 'adj_parameter_folder', json_f), 'r') as f:
+                    json_data = json.load(f)
+                    break
+        # print(json_data)
+        # break
         # Create Mesh converter config
         mesh_converter_cfg = MeshConverterCfg(
             mass_props=mass_props,
@@ -149,27 +158,47 @@ def main():
             usd_dir=os.path.dirname(mesh_go),
             usd_file_name=os.path.basename(mesh_go),
             make_instanceable=args_cli.make_instanceable,
-            collision_approximation=args_cli.collision_approximation,
+            scale=(json_data.get('scale', 1.0), json_data.get('scale', 1.0), json_data.get('scale', 1.0)),
+            # mesh_collision_props=args_cli.collision_approximation,
         )
         mesh_converters_cfgs.append(mesh_converter_cfg)
 
     # Print info
     for mesh_converter_cfg in tqdm.tqdm(mesh_converters_cfgs):
+        # break
         print('|' + "-" * 100 + '|')
         print('|' + "-" * 100 + '|')
         print("Mesh importer config:")
+        print(type(mesh_converter_cfg))
         print_dict(mesh_converter_cfg.to_dict(), nesting=0)
         print('|' + "-" * 100 + '|')
         print('|' + "-" * 100 + '|')
 
+        # print(mesh_converter_cfg.to_dict()['mesh_path'])
+        # break
+
         # Create Mesh converter and import the file
         mesh_converter = MeshConverter(mesh_converter_cfg)
-        
+
+        # stage = mesh_converter.stage
+        # prim = stage.GetPrimAtPath(mesh_converter.prim_path)
+
+        # scale_val = 0.5
+        # xform = UsdGeom.Xformable(prim)
+        # scale_ops = [op for op in xform.GetOrderedXformOps() if op.GetOpName() == "xformOp:scale"]
+        # if scale_ops:
+        #     scale_ops[0].Set((scale_val, scale_val, scale_val))
+        # else:
+        #     xform.AddScaleOp().Set((scale_val, scale_val, scale_val))
+
+        # stage.GetRootLayer().Export(mesh_converter.usd_path)
+                
         # print output
         print("Mesh importer output:")
         print(f"Generated USD file: {mesh_converter.usd_path}")
         print('|' + "-" * 100 + '|')
         print('|' + "-" * 100 + '|')
+        
 
 
 if __name__ == "__main__":
