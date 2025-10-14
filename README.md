@@ -87,9 +87,9 @@ and the builded software in:
 # _build/linux-x86_64/release
 Then try:
 cd ~/urban-sim
-ln -s ${HOME}/IsaacSim/_build/linux-x86_64/release/isaacsim ./_isaac_sim
+ln -s ${HOME}/IsaacSim/_build/linux-x86_64/release ./_isaac_sim
 # Isaac Sim root directory
-export ISAACSIM_PATH="${HOME}/IsaacSim/_build/linux-x86_64/release/isaacsim"
+export ISAACSIM_PATH="${HOME}/IsaacSim/_build/linux-x86_64/release"
 # Isaac Sim python executable
 export ISAACSIM_PYTHON_EXE="${ISAACSIM_PATH}/python.sh"
 # note: you can pass the argument "--help" to see all arguments possible.
