@@ -1,4 +1,4 @@
-# Copyright (c) 2022-2025, The Isaac Lab Project Developers.
+# Copyright (c) 2022-2025, The Isaac Lab Project Developers (https://github.com/isaac-sim/IsaacLab/blob/main/CONTRIBUTORS.md).
 # All rights reserved.
 #
 # SPDX-License-Identifier: BSD-3-Clause
@@ -81,6 +81,7 @@ def create_prim_from_mesh(prim_path: str, mesh: trimesh.Trimesh, **kwargs):
     """
     # need to import these here to prevent isaacsim launching when importing this module
     import isaacsim.core.utils.prims as prim_utils
+    # from pxr import UsdGeom
     from pxr import UsdGeom, Gf, Usd, Sdf
 
     import isaaclab.sim as sim_utils
@@ -99,10 +100,6 @@ def create_prim_from_mesh(prim_path: str, mesh: trimesh.Trimesh, **kwargs):
             "faceVertexCounts": np.asarray([3] * len(mesh.faces)),
             "subdivisionScheme": "bilinear",
         },
-        semantic_label='lane' if 'lane' in prim_path else \
-                        'white_line' if 'white' in prim_path else \
-                        'yellow_line' if 'yellow' in prim_path else \
-                        'sidewalk' if ('sidewalk' in prim_path or 'near' in prim_path or 'far' in prim_path or 'house' in prim_path) else None
     )
     # apply collider properties
     collider_cfg = sim_utils.CollisionPropertiesCfg(collision_enabled=True)
@@ -121,8 +118,7 @@ def create_prim_from_mesh(prim_path: str, mesh: trimesh.Trimesh, **kwargs):
         display_prim_var = UsdGeom.Primvar(display_prim_attr)
         display_prim_var.SetInterpolation(UsdGeom.Tokens.vertex)
         display_prim_var.Set(rgba_colors[:, 3])
-        
-        # UV
+
         try:
             usd_mesh = UsdGeom.Mesh(prim)
             primvars_api = UsdGeom.PrimvarsAPI(usd_mesh)
@@ -130,7 +126,7 @@ def create_prim_from_mesh(prim_path: str, mesh: trimesh.Trimesh, **kwargs):
             st_primvar.Set(mesh.visual.uvs)
         except:
             pass
-            
+
     # create visual material
     if kwargs.get("visual_material") is not None:
         visual_material_cfg: sim_utils.VisualMaterialCfg = kwargs.get("visual_material")

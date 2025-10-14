@@ -1,4 +1,4 @@
-# Copyright (c) 2022-2025, The Isaac Lab Project Developers.
+# Copyright (c) 2022-2025, The Isaac Lab Project Developers (https://github.com/isaac-sim/IsaacLab/blob/main/CONTRIBUTORS.md).
 # All rights reserved.
 #
 # SPDX-License-Identifier: BSD-3-Clause
@@ -44,8 +44,7 @@ class PreTrainedPolicyAction(ActionTerm):
         file_bytes = read_file(cfg.policy_path)
         self.policy = torch.jit.load(file_bytes).to(env.device).eval()
 
-        # self._raw_actions = torch.zeros(self.num_envs, self.action_dim, device=self.device)
-        self._raw_actions = torch.zeros(self.num_envs, 3, device=self.device)
+        self._raw_actions = torch.zeros(self.num_envs, self.action_dim, device=self.device)
 
         # prepare low level actions
         self._low_level_action_term: ActionTerm = cfg.low_level_actions.class_type(cfg.low_level_actions, env)
@@ -67,10 +66,6 @@ class PreTrainedPolicyAction(ActionTerm):
         self._low_level_obs_manager = ObservationManager({"ll_policy": cfg.low_level_observations}, env)
 
         self._counter = 0
-        
-        self.align_heading_with_velocity = cfg.align_heading_with_velocity
-        if self.align_heading_with_velocity:
-            print('[INFO] Aligning heading with velocity.')
 
     """
     Properties.
@@ -96,8 +91,6 @@ class PreTrainedPolicyAction(ActionTerm):
         self._raw_actions[:] = actions
 
     def apply_actions(self):
-        if self.align_heading_with_velocity:
-            self._raw_actions[:, 2] = torch.arctan2(self._raw_actions[:, 1], self._raw_actions[:, 0])
         if self._counter % self.cfg.low_level_decimation == 0:
             low_level_obs = self._low_level_obs_manager.compute_group("ll_policy")
             self.low_level_actions[:] = self.policy(low_level_obs)
@@ -114,7 +107,7 @@ class PreTrainedPolicyAction(ActionTerm):
         # set visibility of markers
         # note: parent only deals with callbacks. not their visibility
         if debug_vis:
-            # create markers if necessary for the first tome
+            # create markers if necessary for the first time
             if not hasattr(self, "base_vel_goal_visualizer"):
                 # -- goal
                 marker_cfg = GREEN_ARROW_X_MARKER_CFG.copy()
@@ -193,5 +186,3 @@ class PreTrainedPolicyActionCfg(ActionTermCfg):
     """Low level observation configuration."""
     debug_vis: bool = True
     """Whether to visualize debug information. Defaults to False."""
-    align_heading_with_velocity: bool = False
-    """Whether to align the heading of the robot with the velocity. Defaults to False."""

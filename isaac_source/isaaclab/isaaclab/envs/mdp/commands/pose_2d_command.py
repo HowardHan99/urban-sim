@@ -1,4 +1,4 @@
-# Copyright (c) 2022-2025, The Isaac Lab Project Developers.
+# Copyright (c) 2022-2025, The Isaac Lab Project Developers (https://github.com/isaac-sim/IsaacLab/blob/main/CONTRIBUTORS.md).
 # All rights reserved.
 #
 # SPDX-License-Identifier: BSD-3-Clause
@@ -15,19 +15,13 @@ from isaaclab.assets import Articulation
 from isaaclab.managers import CommandTerm
 from isaaclab.markers import VisualizationMarkers
 from isaaclab.terrains import TerrainImporter
-from isaaclab.utils.math import quat_from_euler_xyz, quat_rotate_inverse, wrap_to_pi, yaw_quat
+from isaaclab.utils.math import quat_apply_inverse, quat_from_euler_xyz, wrap_to_pi, yaw_quat
 
 if TYPE_CHECKING:
     from isaaclab.envs import ManagerBasedEnv
 
     from .commands_cfg import TerrainBasedPose2dCommandCfg, UniformPose2dCommandCfg
 
-
-import omni
-# from isaacsim.asset.gen.omap import _omap
-import cv2
-import pytest
-import numpy as np
 
 class UniformPose2dCommand(CommandTerm):
     """Command generator that generates pose commands containing a 3-D position and heading.
@@ -62,13 +56,9 @@ class UniformPose2dCommand(CommandTerm):
         self.heading_command_w = torch.zeros(self.num_envs, device=self.device)
         self.pos_command_b = torch.zeros_like(self.pos_command_w)
         self.heading_command_b = torch.zeros_like(self.heading_command_w)
-        self.temp_target_vec = torch.zeros_like(self.pos_command_w)
-        self.relative_movement = torch.zeros_like(self.pos_command_w)
-        self.distance_between_frame = torch.zeros_like(self.pos_command_w)
         # -- metrics
         self.metrics["error_pos"] = torch.zeros(self.num_envs, device=self.device)
         self.metrics["error_heading"] = torch.zeros(self.num_envs, device=self.device)
-            
 
     def __str__(self) -> str:
         msg = "PositionCommand:\n"
@@ -83,10 +73,7 @@ class UniformPose2dCommand(CommandTerm):
     @property
     def command(self) -> torch.Tensor:
         """The desired 2D-pose in base frame. Shape is (num_envs, 4)."""
-        if hasattr(self, 'relative_movement'):
-            return torch.cat([self.pos_command_b, self.heading_command_b.unsqueeze(1), self.relative_movement, self.distance_between_frame[:, 0:1]], dim=1)
-        else:
-            return torch.cat([self.pos_command_b, self.heading_command_b.unsqueeze(1), torch.zeros_like(self.pos_command_b), self.distance_between_frame[:, 0:1]], dim=1)
+        return torch.cat([self.pos_command_b, self.heading_command_b.unsqueeze(1)], dim=1)
 
     """
     Implementation specific functions.
@@ -98,12 +85,14 @@ class UniformPose2dCommand(CommandTerm):
         self.metrics["error_heading"] = torch.abs(wrap_to_pi(self.heading_command_w - self.robot.data.heading_w))
 
     def _resample_command(self, env_ids: Sequence[int]):
+        # obtain env origins for the environments
         self.pos_command_w[env_ids] = self._env.scene.env_origins[env_ids]
         # offset the position command by the current root position
         r = torch.empty(len(env_ids), device=self.device)
         self.pos_command_w[env_ids, 0] += r.uniform_(*self.cfg.ranges.pos_x)
         self.pos_command_w[env_ids, 1] += r.uniform_(*self.cfg.ranges.pos_y)
         self.pos_command_w[env_ids, 2] += self.robot.data.default_root_state[env_ids, 2]
+
         if self.cfg.simple_heading:
             # set heading command to point towards target
             target_vec = self.pos_command_w[env_ids] - self.robot.data.root_pos_w[env_ids]
@@ -128,18 +117,11 @@ class UniformPose2dCommand(CommandTerm):
     def _update_command(self):
         """Re-target the position command to the current root state."""
         target_vec = self.pos_command_w - self.robot.data.root_pos_w[:, :3]
-        self.pos_command_b[:] = quat_rotate_inverse(yaw_quat(self.robot.data.root_quat_w), target_vec)
+        self.pos_command_b[:] = quat_apply_inverse(yaw_quat(self.robot.data.root_quat_w), target_vec)
         self.heading_command_b[:] = wrap_to_pi(self.heading_command_w - self.robot.data.heading_w)
-        if not hasattr(self, 'temp_target_vec'):
-            self.temp_target_vec = target_vec.clone()
-            self.relative_movement = torch.zeros_like(self.temp_target_vec)
-        else:
-            self.distance_between_frame[:, 0] = torch.norm(self.temp_target_vec[:, :2], dim=1) - torch.norm(target_vec, dim=1) # distance in prev - distance in current > 0 is better
-            self.relative_movement = -(target_vec - self.temp_target_vec)
-            self.temp_target_vec = target_vec.clone()
 
     def _set_debug_vis_impl(self, debug_vis: bool):
-        # create markers if necessary for the first tome
+        # create markers if necessary for the first time
         if debug_vis:
             if not hasattr(self, "goal_pose_visualizer"):
                 self.goal_pose_visualizer = VisualizationMarkers(self.cfg.goal_pose_visualizer_cfg)
@@ -152,7 +134,7 @@ class UniformPose2dCommand(CommandTerm):
     def _debug_vis_callback(self, event):
         # update the box marker
         self.goal_pose_visualizer.visualize(
-            translations=torch.cat([self.pos_command_w[:, :2], torch.ones_like(self.pos_command_w[:, 2:3]) * 2.5], dim=1),
+            translations=self.pos_command_w,
             orientations=quat_from_euler_xyz(
                 torch.zeros_like(self.heading_command_w),
                 torch.zeros_like(self.heading_command_w),
