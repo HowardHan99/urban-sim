@@ -50,7 +50,7 @@ setup_conda_env() {
         echo -e "[INFO] Conda environment named '${env_name}' already exists."
     else
         echo -e "[INFO] Creating conda environment named '${env_name}'..."
-        conda create -y --name ${env_name} python=3.10
+        conda create -y --name ${env_name} python=3.11
     fi
 
     # cache current paths for later
