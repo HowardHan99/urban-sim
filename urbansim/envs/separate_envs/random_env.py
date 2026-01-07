@@ -207,7 +207,7 @@ def main():
         
     for t in range(1000000):
         action = env.action_space.sample()
-        action = torch.from_numpy(action).float().to(env.device)
+        action = torch.from_numpy(action).float().to(env.unwrapped.device)
         obs, reward, terminated, truncated, info = env.step(action)
         if args_cli.save_images:
             import cv2
