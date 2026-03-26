@@ -4,14 +4,14 @@
 
 
 # Configuration directories and files
-SourceDirectory: /home/hollis/projects/URBAN-SIM-Private/meta_source/metaurban/metaurban/orca_algo/external/tinyxml2
-BuildDirectory: /home/hollis/projects/URBAN-SIM-Private/meta_source/metaurban/metaurban/orca_algo/build/external/tinyxml2
+SourceDirectory: /home/howardhan/urban-sim/meta_source/metaurban/metaurban/orca_algo/external/tinyxml2
+BuildDirectory: /home/howardhan/urban-sim/meta_source/metaurban/metaurban/orca_algo/build/external/tinyxml2
 
 # Where to place the cost data store
 CostDataFile: 
 
 # Site is something like machine.domain, i.e. pragmatic.crd
-Site: hollis-Legion-T7-34IRZ8
+Site: norbert-adcs
 
 # Build name is osname-revision-compiler, i.e. Linux-2.4.2-2smp-c++
 BuildName: Linux-c++
@@ -27,8 +27,8 @@ SubmitInactivityTimeout:
 NightlyStartTime: 00:00:00 EDT
 
 # Commands for the build/test/submit cycle
-ConfigureCommand: "/home/hollis/anaconda3/envs/urbansim/lib/python3.10/site-packages/cmake/data/bin/cmake" "/home/hollis/projects/URBAN-SIM-Private/meta_source/metaurban/metaurban/orca_algo/external/tinyxml2"
-MakeCommand: /home/hollis/anaconda3/envs/urbansim/lib/python3.10/site-packages/cmake/data/bin/cmake --build . --config "${CTEST_CONFIGURATION_TYPE}"
+ConfigureCommand: "/home/howardhan/anaconda3/envs/urbansim/lib/python3.11/site-packages/cmake/data/bin/cmake" "/home/howardhan/urban-sim/meta_source/metaurban/metaurban/orca_algo/external/tinyxml2"
+MakeCommand: /home/howardhan/anaconda3/envs/urbansim/lib/python3.11/site-packages/cmake/data/bin/cmake --build . --config "${CTEST_CONFIGURATION_TYPE}"
 DefaultCTestConfigurationType: Release
 
 # version control
@@ -64,7 +64,7 @@ UpdateType:
 
 # Compiler info
 Compiler: /usr/bin/c++
-CompilerVersion: 10.5.0
+CompilerVersion: 11.4.0
 
 # Dynamic analysis (MemCheck)
 PurifyCommand: 
@@ -76,7 +76,7 @@ CudaSanitizerCommand:
 CudaSanitizerCommandOptions: 
 MemoryCheckType: 
 MemoryCheckSanitizerOptions: 
-MemoryCheckCommand: /usr/bin/valgrind
+MemoryCheckCommand: MEMORYCHECK_COMMAND-NOTFOUND
 MemoryCheckCommandOptions: 
 MemoryCheckSuppressionFile: 
 

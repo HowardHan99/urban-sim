@@ -1,4 +1,4 @@
-# Install script for directory: /home/hollis/projects/URBAN-SIM-Private/meta_source/metaurban/metaurban/orca_algo/pybind11
+# Install script for directory: /home/howardhan/urban-sim/meta_source/metaurban/metaurban/orca_algo/pybind11
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -12,7 +12,7 @@ if(NOT DEFINED CMAKE_INSTALL_CONFIG_NAME)
     string(REGEX REPLACE "^[^A-Za-z0-9_]+" ""
            CMAKE_INSTALL_CONFIG_NAME "${BUILD_TYPE}")
   else()
-    set(CMAKE_INSTALL_CONFIG_NAME "Release")
+    set(CMAKE_INSTALL_CONFIG_NAME "")
   endif()
   message(STATUS "Install configuration: \"${CMAKE_INSTALL_CONFIG_NAME}\"")
 endif()
@@ -45,6 +45,6 @@ endif()
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
 if(CMAKE_INSTALL_LOCAL_ONLY)
-  file(WRITE "/home/hollis/projects/URBAN-SIM-Private/meta_source/metaurban/metaurban/orca_algo/build/pybind11/install_local_manifest.txt"
+  file(WRITE "/home/howardhan/urban-sim/meta_source/metaurban/metaurban/orca_algo/build/pybind11/install_local_manifest.txt"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
 endif()
