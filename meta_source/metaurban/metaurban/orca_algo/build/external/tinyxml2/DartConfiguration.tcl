@@ -26,8 +26,13 @@ SubmitURL: http://
 NightlyStartTime: 00:00:00 EDT
 
 # Commands for the build/test/submit cycle
+<<<<<<< HEAD
 ConfigureCommand: "/usr/bin/cmake" "/home/howardhan/urban-sim/meta_source/metaurban/metaurban/orca_algo/external/tinyxml2"
 MakeCommand: /usr/bin/cmake --build . --config "${CTEST_CONFIGURATION_TYPE}"
+=======
+ConfigureCommand: "/home/howardhan/anaconda3/envs/urbansim/lib/python3.11/site-packages/cmake/data/bin/cmake" "/home/howardhan/urban-sim/meta_source/metaurban/metaurban/orca_algo/external/tinyxml2"
+MakeCommand: /home/howardhan/anaconda3/envs/urbansim/lib/python3.11/site-packages/cmake/data/bin/cmake --build . --config "${CTEST_CONFIGURATION_TYPE}"
+>>>>>>> 303a790e1d818b0612b839ac12453186e7512c7c
 DefaultCTestConfigurationType: Release
 
 # version control

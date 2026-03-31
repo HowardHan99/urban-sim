@@ -12,7 +12,7 @@ if(NOT DEFINED CMAKE_INSTALL_CONFIG_NAME)
     string(REGEX REPLACE "^[^A-Za-z0-9_]+" ""
            CMAKE_INSTALL_CONFIG_NAME "${BUILD_TYPE}")
   else()
-    set(CMAKE_INSTALL_CONFIG_NAME "Release")
+    set(CMAKE_INSTALL_CONFIG_NAME "")
   endif()
   message(STATUS "Install configuration: \"${CMAKE_INSTALL_CONFIG_NAME}\"")
 endif()
@@ -52,13 +52,27 @@ if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   include("/home/howardhan/urban-sim/meta_source/metaurban/metaurban/orca_algo/build/external/tinyxml2/cmake_install.cmake")
 endif()
 
+<<<<<<< HEAD
+=======
+string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
+       "${CMAKE_INSTALL_MANIFEST_FILES}")
+if(CMAKE_INSTALL_LOCAL_ONLY)
+  file(WRITE "/home/howardhan/urban-sim/meta_source/metaurban/metaurban/orca_algo/build/install_local_manifest.txt"
+     "${CMAKE_INSTALL_MANIFEST_CONTENT}")
+endif()
+>>>>>>> 303a790e1d818b0612b839ac12453186e7512c7c
 if(CMAKE_INSTALL_COMPONENT)
   set(CMAKE_INSTALL_MANIFEST "install_manifest_${CMAKE_INSTALL_COMPONENT}.txt")
 else()
   set(CMAKE_INSTALL_MANIFEST "install_manifest.txt")
 endif()
 
+<<<<<<< HEAD
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
 file(WRITE "/home/howardhan/urban-sim/meta_source/metaurban/metaurban/orca_algo/build/${CMAKE_INSTALL_MANIFEST}"
+=======
+if(NOT CMAKE_INSTALL_LOCAL_ONLY)
+  file(WRITE "/home/howardhan/urban-sim/meta_source/metaurban/metaurban/orca_algo/build/${CMAKE_INSTALL_MANIFEST}"
+>>>>>>> 303a790e1d818b0612b839ac12453186e7512c7c
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

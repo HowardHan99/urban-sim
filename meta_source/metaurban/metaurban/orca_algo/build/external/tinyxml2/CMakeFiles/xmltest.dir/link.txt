@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 /usr/bin/c++  -fPIC -std=c++14 -w -O0 -O3 -DNDEBUG CMakeFiles/xmltest.dir/xmltest.cpp.o -o xmltest  libtinyxml2.a 
+=======
+/usr/bin/c++  -fPIC -std=c++14 -w -O0 CMakeFiles/xmltest.dir/xmltest.cpp.o -o xmltest  libtinyxml2.a
+>>>>>>> 303a790e1d818b0612b839ac12453186e7512c7c
