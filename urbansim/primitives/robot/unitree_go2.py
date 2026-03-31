@@ -128,7 +128,6 @@ class GO2NavActionsCfg:
         low_level_actions=mdp.JointPositionActionCfg(asset_name="robot", joint_names=[".*"], scale=0.25, use_default_offset=True),
         low_level_observations=loc_ObservationsCfg.PolicyCfg(),
         debug_vis=False,
-        align_heading_with_velocity=True,
     )
 
 def GO2NavModifyEnv(env):
