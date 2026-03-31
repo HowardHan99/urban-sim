@@ -23,9 +23,66 @@ from isaaclab.utils.noise import AdditiveUniformNoiseCfg as Unoise
 
 import isaaclab_tasks.manager_based.locomotion.velocity.mdp as loc_mdp
 import isaaclab_tasks.manager_based.navigation.mdp as nav_mdp
+import isaaclab.envs.mdp as env_mdp
 from isaaclab.sensors import CameraCfg, TiledCameraCfg
 
 from urbansim.scene.urban_scene import UrbanSceneCfg
+
+
+def advanced_generated_commands_compat(env, command_name: str, max_dim: int, normalize: bool) -> torch.Tensor:
+    """Compatibility helper for IsaacLab versions without advanced_generated_commands."""
+    command = env_mdp.generated_commands(env, command_name=command_name)[..., :max_dim]
+    if not normalize:
+        return command
+    max_norm = 5.0
+    distance = torch.norm(command, dim=-1, keepdim=False)
+    mask = distance > max_norm
+    if mask.any():
+        scale = max_norm / distance[mask]
+        command[mask] = scale.reshape(-1, 1) * command[mask]
+    return command
+
+
+def rgbd_processed_compat(env, sensor_cfg: SceneEntityCfg) -> torch.Tensor:
+    """Compatibility helper for IsaacLab versions without rgbd_processed."""
+    return env_mdp.image(env, sensor_cfg=sensor_cfg, data_type="rgb", normalize=True)
+
+
+def moving_towards_goal_reward_compat(env, command_name: str) -> torch.Tensor:
+    """Compatibility helper for IsaacLab versions without moving_towards_goal_reward."""
+    command = env.command_manager.get_command(command_name)
+    movement_xy = command[:, -1:]
+    reward = movement_xy[:, 0]
+    return reward * (env.episode_length_buf >= 10).float()
+
+
+def target_vel_reward_compat(env, command_name: str) -> torch.Tensor:
+    """Compatibility helper for IsaacLab versions without target_vel_reward."""
+    command = env.command_manager.get_command(command_name)
+    target_pos = command[:, :2]
+    distance = torch.linalg.norm(target_pos, dim=1, keepdim=True).clamp_min(1e-6)
+    asset = env.scene["robot"]
+    vel = asset.data.root_lin_vel_b[:, 0:2]
+    vel_direction = target_pos / distance
+    return (vel * vel_direction).sum(-1)
+
+
+def arrive_compat(env, threshold: float, command_name: str) -> torch.Tensor:
+    """Compatibility helper for IsaacLab versions without arrive termination."""
+    command = env.command_manager.get_command(command_name)
+    des_pos_b = command[:, :2]
+    distance = torch.norm(des_pos_b, dim=1)
+    return ((distance <= threshold).bool() * (env.episode_length_buf >= 10).bool()).bool()
+
+
+def illegal_contact_compat(env, threshold: float, sensor_cfg: SceneEntityCfg) -> torch.Tensor:
+    """Compatibility helper for IsaacLab versions without illegal_contact termination."""
+    contact_sensor = env.scene.sensors[sensor_cfg.name]
+    net_contact_forces = contact_sensor.data.net_forces_w_history
+    return torch.any(
+        torch.max(torch.norm(net_contact_forces[:, :, sensor_cfg.body_ids], dim=-1), dim=1)[0] > threshold,
+        dim=1,
+    )
 
 # Random path
 material_path = './assets/materials'
@@ -107,7 +164,7 @@ class SceneCfg(UrbanSceneCfg):
         ),
         visual_material=sim_utils.MdlFileCfg(
             mdl_path=f"{ISAACLAB_NUCLEUS_DIR}/Materials/TilesMarbleSpiderWhiteBrickBondHoned/TilesMarbleSpiderWhiteBrickBondHoned.mdl",
-            project_uvw=True,
+            project_uvw=False,
             texture_scale=(0.25, 0.25),
         ),
         debug_vis=False,
@@ -145,10 +202,10 @@ class SceneCfg(UrbanSceneCfg):
         ) for i in range(4)
     ]
     terrain_walkable_material_list = [
-        sim_utils.MdlFileCfg(mdl_path=walkable_material_path_list[i], project_uvw=True, texture_scale=1000) for i in range(len(terrain_importer_walkable_list))
+        sim_utils.MdlFileCfg(mdl_path=walkable_material_path_list[i], project_uvw=False, texture_scale=(1000.0, 1000.0)) for i in range(len(terrain_importer_walkable_list))
     ]
     terrain_non_walkable_material_list = [
-        sim_utils.MdlFileCfg(mdl_path=non_walkable_material_path_list[i], project_uvw=True, texture_scale=1000) for i in range(len(terrain_non_walkable_list))
+        sim_utils.MdlFileCfg(mdl_path=non_walkable_material_path_list[i], project_uvw=False, texture_scale=(1000.0, 1000.0)) for i in range(len(terrain_non_walkable_list))
     ]
     
     # sensor
@@ -220,13 +277,13 @@ class ObservationsCfg:
     class PolicyCfg(ObsGroup):
         """Observations for policy group."""
         # observation terms (order preserved)
-        pose_command = ObsTerm(func=loc_mdp.advanced_generated_commands, params={"command_name": "pose_command", 
+        pose_command = ObsTerm(func=advanced_generated_commands_compat, params={"command_name": "pose_command", 
                                                                                  "max_dim": 2,
                                                                                  "normalize": True})
         
     @configclass
     class SensorCfg(ObsGroup):
-        rgb = ObsTerm(func=nav_mdp.rgbd_processed, params={"sensor_cfg": SceneEntityCfg("camera")})
+        rgb = ObsTerm(func=rgbd_processed_compat, params={"sensor_cfg": SceneEntityCfg("camera")})
     
     # observation groups
     policy: PolicyCfg = PolicyCfg()
@@ -274,11 +331,11 @@ class RewardsCfg:
         params={"std": 1.0, "command_name": "pose_command"},
     )
     moving_towards_goal = RewTerm(
-        func=nav_mdp.moving_towards_goal_reward, 
+        func=moving_towards_goal_reward_compat,
         weight=20.0, 
         params={"command_name": "pose_command"})
     target_vel_rew = RewTerm(
-        func=nav_mdp.target_vel_reward, 
+        func=target_vel_reward_compat,
         weight=10.0, 
         params={"command_name": "pose_command"})
 
@@ -289,14 +346,14 @@ class TerminationsCfg:
 
     time_out = DoneTerm(func=loc_mdp.time_out, time_out=True)
     collision = DoneTerm(
-        func=nav_mdp.illegal_contact, time_out=False,
+        func=illegal_contact_compat, time_out=False,
         params={
             "sensor_cfg": SceneEntityCfg("contact_forces", body_names="body_link"), # change path to your robot
             "threshold": 1.0
             },
     )
     arrive = DoneTerm(
-        func=nav_mdp.arrive, time_out=False,
+        func=arrive_compat, time_out=False,
         params={"threshold": 1.0, "command_name": "pose_command"},
     )
     # out_of_region = DoneTerm(

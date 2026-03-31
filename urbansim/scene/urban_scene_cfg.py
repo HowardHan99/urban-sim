@@ -55,6 +55,9 @@ class UrbanSceneCfg:
         Collisions can only be filtered automatically in direct workflows when physics replication is enabled.
         If ``replicated_physics=False`` and collision filtering is desired, make sure to call ``scene.filter_collisions()``.
     """
+
+    clone_in_fabric: bool = False
+    """Enable/disable cloning in fabric. Default is False."""
     
     scenario_generation_method: str = None
     """

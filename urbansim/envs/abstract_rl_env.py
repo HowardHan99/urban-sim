@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import gymnasium as gym
 import math
+import os
 import numpy as np
 import torch
 from collections.abc import Sequence
@@ -15,7 +16,9 @@ import builtins
 
 import isaacsim.core.utils.torch as torch_utils
 import omni.log
+import omni.usd
 from isaacsim.core.simulation_manager import SimulationManager
+from pxr import Sdf
 
 from isaaclab.managers import ActionManager, EventManager, ObservationManager, RecorderManager
 from isaaclab.scene import InteractiveScene
@@ -106,7 +109,13 @@ class AbstractRLEnv(ManagerBasedRLEnv, gym.Env):
         with Timer("[INFO]: Time taken for scene creation", "scene_creation"):
             self.scene = UrbanScene(self.cfg.scene)
             self.scene.generate_scene()
+            self._remap_stale_texture_paths()
         print("[INFO]: Scene manager: ", self.scene)
+
+        # create event manager before loading child/parent managers (compat with newer IsaacLab)
+        self.event_manager = EventManager(self.cfg.events, self)
+        if "prestartup" in self.event_manager.available_modes:
+            self.event_manager.apply(mode="prestartup")
 
         # set up camera viewport controller
         # viewport is not available in other rendering modes so the function will throw a warning
@@ -178,6 +187,49 @@ class AbstractRLEnv(ManagerBasedRLEnv, gym.Env):
     """
     Operations - Setup.
     """
+
+    def _remap_stale_texture_paths(self):
+        """Rewrite stale absolute texture references embedded in legacy USD assets."""
+        path_remaps = [
+            (
+                "/home/hollis/projects/IsaacUrban/coco_one/materials/",
+                "/home/howardhan/urban-sim/assets/robots/coco_one/materials/",
+            ),
+            (
+                "/home/hollis/projects/IsaacUrban/coco_one/coco_one/materials/",
+                "/home/howardhan/urban-sim/assets/robots/coco_one/coco_one/materials/",
+            ),
+        ]
+        stage = omni.usd.get_context().get_stage()
+        if stage is None:
+            return
+
+        def _rewrite_if_stale(path: str) -> str | None:
+            for old_prefix, new_prefix in path_remaps:
+                if old_prefix in path:
+                    candidate = path.replace(old_prefix, new_prefix)
+                    if os.path.exists(candidate):
+                        return candidate
+            return None
+
+        for prim in stage.Traverse():
+            for attr in prim.GetAttributes():
+                if not attr.HasValue():
+                    continue
+                value = attr.Get()
+                if value is None:
+                    continue
+                attr_type = attr.GetTypeName()
+                if attr_type == Sdf.ValueTypeNames.Asset:
+                    path = str(value.path)
+                    new_path = _rewrite_if_stale(path)
+                    if new_path is not None and new_path != path:
+                        attr.Set(Sdf.AssetPath(new_path))
+                elif attr_type in (Sdf.ValueTypeNames.String, Sdf.ValueTypeNames.Token):
+                    if isinstance(value, str):
+                        new_path = _rewrite_if_stale(value)
+                        if new_path is not None and new_path != value:
+                            attr.Set(new_path)
 
     def load_managers(self):
         # note: this order is important since observation manager needs to know the command and action managers

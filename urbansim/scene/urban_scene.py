@@ -782,7 +782,9 @@ class UrbanScene(InteractiveScene):
                 sim_utils.bind_physics_material(f'/World/Walkable_{i:03d}', f'/World/Looks/terrain_non_walkable_material_list_{i:03d}')
                 stage = omni.usd.get_context().get_stage()
                 prim = stage.GetPrimAtPath(Sdf.Path(f'/World/Walkable_{i:03d}/Environment'))
-                prim.SetActive(False)
+                if prim and prim.IsValid():
+
+                        prim.SetActive(False)
                 
             for i in range(len(all_region_polygon_list)):
                 mesh_list = all_region_polygon_list[i]
@@ -796,23 +798,31 @@ class UrbanScene(InteractiveScene):
                 sim_utils.bind_visual_material(f'/World/NonWalkable_{i:03d}', f'/World/Looks/terrain_non_walkable_material_list_{i:03d}')
                 sim_utils.bind_physics_material(f'/World/NonWalkable_{i:03d}', f'/World/Looks/terrain_non_walkable_material_list_{i:03d}')
                 prim = stage.GetPrimAtPath(Sdf.Path(f'/World/NonWalkable_{i:03d}/Environment'))
-                prim.SetActive(False)
+                if prim and prim.IsValid():
+
+                        prim.SetActive(False)
             
             # Remove ground plane
             for i in range(max(len(self.all_region_list), len(self.walkable_terrain_list))):
                 try:
                     prim = stage.GetPrimAtPath(Sdf.Path(f'/World/NonWalkable_{i:03d}/Environment'))
-                    prim.SetActive(False)
+                    if prim and prim.IsValid():
+
+                        prim.SetActive(False)
                 except:
                     pass
                 
                 try:
                     prim = stage.GetPrimAtPath(Sdf.Path(f'/World/Walkable_{i:03d}/Environment'))
-                    prim.SetActive(False)
+                    if prim and prim.IsValid():
+
+                            prim.SetActive(False)
                 except:
                     pass
             prim = stage.GetPrimAtPath(Sdf.Path(f'/World/ground/Environment'))
-            prim.SetActive(False)
+            if prim and prim.IsValid():
+
+                    prim.SetActive(False)
             
         # static objects
         if generation_cfg['type'] == 'static' or  generation_cfg['type'] == 'dynamic':
@@ -1150,9 +1160,13 @@ class UrbanScene(InteractiveScene):
         # deactivate some prims
         stage = omni.usd.get_context().get_stage()
         prim = stage.GetPrimAtPath(Sdf.Path(f'/World/ground/Environment'))
-        prim.SetActive(False)
+        if prim and prim.IsValid():
+
+            prim.SetActive(False)
         prim = stage.GetPrimAtPath(Sdf.Path(f'/World/Obstacle_terrain/Environment'))
-        prim.SetActive(False)
+        if prim and prim.IsValid():
+
+            prim.SetActive(False)
         
     def generate_limited_async_procedural_scene(self):
         generation_cfg = self.cfg.pg_config
@@ -1236,7 +1250,9 @@ class UrbanScene(InteractiveScene):
                 sim_utils.bind_physics_material(f'/World/Walkable_{i:03d}', f'/World/Looks/terrain_non_walkable_material_list_{i:03d}')
                 stage = omni.usd.get_context().get_stage()
                 prim = stage.GetPrimAtPath(Sdf.Path(f'/World/Walkable_{i:03d}/Environment'))
-                prim.SetActive(False)
+                if prim and prim.IsValid():
+
+                    prim.SetActive(False)
                 
             for i in range(len(all_region_polygon_list)):
                 mesh_list = all_region_polygon_list[i]
@@ -1250,23 +1266,31 @@ class UrbanScene(InteractiveScene):
                 sim_utils.bind_visual_material(f'/World/NonWalkable_{i:03d}', f'/World/Looks/terrain_non_walkable_material_list_{i:03d}')
                 sim_utils.bind_physics_material(f'/World/NonWalkable_{i:03d}', f'/World/Looks/terrain_non_walkable_material_list_{i:03d}')
                 prim = stage.GetPrimAtPath(Sdf.Path(f'/World/NonWalkable_{i:03d}/Environment'))
-                prim.SetActive(False)
+                if prim and prim.IsValid():
+
+                    prim.SetActive(False)
             
             # Remove ground plane
             for i in range(max(len(self.all_region_list), len(self.walkable_terrain_list))):
                 try:
                     prim = stage.GetPrimAtPath(Sdf.Path(f'/World/NonWalkable_{i:03d}/Environment'))
-                    prim.SetActive(False)
+                    if prim and prim.IsValid():
+
+                        prim.SetActive(False)
                 except:
                     pass
                 
                 try:
                     prim = stage.GetPrimAtPath(Sdf.Path(f'/World/Walkable_{i:03d}/Environment'))
-                    prim.SetActive(False)
+                    if prim and prim.IsValid():
+
+                        prim.SetActive(False)
                 except:
                     pass
             prim = stage.GetPrimAtPath(Sdf.Path(f'/World/ground/Environment'))
-            prim.SetActive(False)
+            if prim and prim.IsValid():
+
+                prim.SetActive(False)
             
         # static objects
         if generation_cfg['type'] == 'static' or  generation_cfg['type'] == 'dynamic':
@@ -1654,9 +1678,13 @@ class UrbanScene(InteractiveScene):
         # deactivate some prims
         stage = omni.usd.get_context().get_stage()
         prim = stage.GetPrimAtPath(Sdf.Path(f'/World/ground/Environment'))
-        prim.SetActive(False)
+        if prim and prim.IsValid():
+
+            prim.SetActive(False)
         prim = stage.GetPrimAtPath(Sdf.Path(f'/World/Obstacle_terrain/Environment'))
-        prim.SetActive(False)
+        if prim and prim.IsValid():
+
+            prim.SetActive(False)
         
     def generate_sync_procedural_scene(self):
         from metaurban.manager.traffic_manager import TrafficMode
@@ -1900,25 +1928,45 @@ class UrbanScene(InteractiveScene):
             
             stage = omni.usd.get_context().get_stage()
             prim = stage.GetPrimAtPath(Sdf.Path(f'/World/ground/Environment'))
-            prim.SetActive(False)
+            if prim and prim.IsValid():
+
+                prim.SetActive(False)
             prim = stage.GetPrimAtPath(Sdf.Path(f'/World/Lane/Environment'))
-            prim.SetActive(False)
+            if prim and prim.IsValid():
+
+                prim.SetActive(False)
             prim = stage.GetPrimAtPath(Sdf.Path(f'/World/WhiteLine/Environment'))
-            prim.SetActive(False)
+            if prim and prim.IsValid():
+
+                prim.SetActive(False)
             prim = stage.GetPrimAtPath(Sdf.Path(f'/World/YellowLine/Environment'))
-            prim.SetActive(False)
+            if prim and prim.IsValid():
+
+                prim.SetActive(False)
             prim = stage.GetPrimAtPath(Sdf.Path(f'/World/Sidewalk/Environment'))
-            prim.SetActive(False)
+            if prim and prim.IsValid():
+
+                prim.SetActive(False)
             prim = stage.GetPrimAtPath(Sdf.Path(f'/World/NearRoad/Environment'))
-            prim.SetActive(False)
+            if prim and prim.IsValid():
+
+                prim.SetActive(False)
             prim = stage.GetPrimAtPath(Sdf.Path(f'/World/NearBuffer/Environment'))
-            prim.SetActive(False)
+            if prim and prim.IsValid():
+
+                prim.SetActive(False)
             prim = stage.GetPrimAtPath(Sdf.Path(f'/World/FarFromBuffer/Environment'))
-            prim.SetActive(False)
+            if prim and prim.IsValid():
+
+                prim.SetActive(False)
             prim = stage.GetPrimAtPath(Sdf.Path(f'/World/FarFromRoad/Environment'))
-            prim.SetActive(False)
+            if prim and prim.IsValid():
+
+                prim.SetActive(False)
             prim = stage.GetPrimAtPath(Sdf.Path(f'/World/HouseRegion/Environment'))
-            prim.SetActive(False)
+            if prim and prim.IsValid():
+
+                prim.SetActive(False)
          
     def generate_async_procedural_scene(self):
         from metaurban.manager.traffic_manager import TrafficMode
@@ -2057,25 +2105,45 @@ class UrbanScene(InteractiveScene):
             
             stage = omni.usd.get_context().get_stage()
             prim = stage.GetPrimAtPath(Sdf.Path(f'/World/ground/Environment'))
-            prim.SetActive(False)
+            if prim and prim.IsValid():
+
+                prim.SetActive(False)
             prim = stage.GetPrimAtPath(Sdf.Path(f'/World/Lane/Environment'))
-            prim.SetActive(False)
+            if prim and prim.IsValid():
+
+                prim.SetActive(False)
             prim = stage.GetPrimAtPath(Sdf.Path(f'/World/WhiteLine/Environment'))
-            prim.SetActive(False)
+            if prim and prim.IsValid():
+
+                prim.SetActive(False)
             prim = stage.GetPrimAtPath(Sdf.Path(f'/World/YellowLine/Environment'))
-            prim.SetActive(False)
+            if prim and prim.IsValid():
+
+                prim.SetActive(False)
             prim = stage.GetPrimAtPath(Sdf.Path(f'/World/Sidewalk/Environment'))
-            prim.SetActive(False)
+            if prim and prim.IsValid():
+
+                prim.SetActive(False)
             prim = stage.GetPrimAtPath(Sdf.Path(f'/World/NearRoad/Environment'))
-            prim.SetActive(False)
+            if prim and prim.IsValid():
+
+                prim.SetActive(False)
             prim = stage.GetPrimAtPath(Sdf.Path(f'/World/NearBuffer/Environment'))
-            prim.SetActive(False)
+            if prim and prim.IsValid():
+
+                prim.SetActive(False)
             prim = stage.GetPrimAtPath(Sdf.Path(f'/World/FarFromBuffer/Environment'))
-            prim.SetActive(False)
+            if prim and prim.IsValid():
+
+                prim.SetActive(False)
             prim = stage.GetPrimAtPath(Sdf.Path(f'/World/FarFromRoad/Environment'))
-            prim.SetActive(False)
+            if prim and prim.IsValid():
+
+                prim.SetActive(False)
             prim = stage.GetPrimAtPath(Sdf.Path(f'/World/HouseRegion/Environment'))
-            prim.SetActive(False)
+            if prim and prim.IsValid():
+
+                prim.SetActive(False)
     
     def setup_object_dict(self):
         if self._is_scene_setup_from_cfg():

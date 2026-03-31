@@ -92,7 +92,7 @@ class SceneCfg(UrbanSceneCfg):
         ),
         visual_material=sim_utils.MdlFileCfg(
             mdl_path=f"{ISAACLAB_NUCLEUS_DIR}/Materials/TilesMarbleSpiderWhiteBrickBondHoned/TilesMarbleSpiderWhiteBrickBondHoned.mdl",
-            project_uvw=True,
+            project_uvw=False,
             texture_scale=(0.25, 0.25),
         ),
         debug_vis=False,
@@ -179,19 +179,19 @@ class SceneCfg(UrbanSceneCfg):
         visual_material=None
     )
     
-    lane_material_cfg = sim_utils.MdlFileCfg(mdl_path=f'{material_path}/Concrete/Mortar.mdl', project_uvw=True, texture_scale=1000)
+    lane_material_cfg = sim_utils.MdlFileCfg(mdl_path=f'{material_path}/Concrete/Mortar.mdl', project_uvw=False, texture_scale=(1000.0, 1000.0))
     lane_material_cfg.func('/World/Looks/LaneMaterial', lane_material_cfg)
-    sidewalk_material_cfg = sim_utils.MdlFileCfg(mdl_path=f'{material_path}/Ground/Paving_Stones.mdl', project_uvw=True, texture_scale=1000)
+    sidewalk_material_cfg = sim_utils.MdlFileCfg(mdl_path=f'{material_path}/Ground/Paving_Stones.mdl', project_uvw=False, texture_scale=(1000.0, 1000.0))
     sidewalk_material_cfg.func('/World/Looks/SidewalkMaterial', sidewalk_material_cfg)
-    sidewalk_n_material_cfg = sim_utils.MdlFileCfg(mdl_path=f'{material_path}/Ground/Cobblestone_Big_and_Loose.mdl', project_uvw=True, texture_scale=1000)
+    sidewalk_n_material_cfg = sim_utils.MdlFileCfg(mdl_path=f'{material_path}/Ground/Cobblestone_Big_and_Loose.mdl', project_uvw=False, texture_scale=(1000.0, 1000.0))
     sidewalk_n_material_cfg.func('/World/Looks/SidewalkNMaterial', sidewalk_n_material_cfg)
-    sidewalk_nb_material_cfg = sim_utils.MdlFileCfg(mdl_path=f'{material_path}/Ground/Cobblestone_Medieval.mdl', project_uvw=True, texture_scale=1000)
+    sidewalk_nb_material_cfg = sim_utils.MdlFileCfg(mdl_path=f'{material_path}/Ground/Cobblestone_Medieval.mdl', project_uvw=False, texture_scale=(1000.0, 1000.0))
     sidewalk_nb_material_cfg.func('/World/Looks/SidewalkNBMaterial', sidewalk_nb_material_cfg)
-    sidewalk_f_material_cfg = sim_utils.MdlFileCfg(mdl_path=f'{material_path}/Ground/Rough_Gravel.mdl', project_uvw=True, texture_scale=1000)
+    sidewalk_f_material_cfg = sim_utils.MdlFileCfg(mdl_path=f'{material_path}/Ground/Rough_Gravel.mdl', project_uvw=False, texture_scale=(1000.0, 1000.0))
     sidewalk_f_material_cfg.func('/World/Looks/SidewalkFMaterial', sidewalk_f_material_cfg)
-    sidewalk_fb_material_cfg = sim_utils.MdlFileCfg(mdl_path=f'{material_path}/Ground/Mulch.mdl', project_uvw=True, texture_scale=1000)
+    sidewalk_fb_material_cfg = sim_utils.MdlFileCfg(mdl_path=f'{material_path}/Ground/Mulch.mdl', project_uvw=False, texture_scale=(1000.0, 1000.0))
     sidewalk_fb_material_cfg.func('/World/Looks/SidewalkFBMaterial', sidewalk_fb_material_cfg)
-    sidewalk_h_material_cfg = sim_utils.MdlFileCfg(mdl_path=f'{material_path}/Concrete/Concrete_Formed.mdl', project_uvw=True, texture_scale=1000)
+    sidewalk_h_material_cfg = sim_utils.MdlFileCfg(mdl_path=f'{material_path}/Concrete/Concrete_Formed.mdl', project_uvw=False, texture_scale=(1000.0, 1000.0))
     sidewalk_h_material_cfg.func('/World/Looks/SidewalkHMaterial', sidewalk_h_material_cfg)
     
     # sensor
