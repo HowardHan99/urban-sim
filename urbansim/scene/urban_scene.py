@@ -9,6 +9,7 @@ import torch
 import random
 from collections.abc import Sequence
 import trimesh
+from pathlib import Path
 from shapely.geometry import Polygon, MultiPolygon, Point
 from typing import Any
 import os
@@ -666,8 +667,21 @@ class UrbanScene(InteractiveScene):
         self.count += 1
         
     def dynamic_asset_animatable_state(self):
-        add_reference_to_stage(usd_path="assets/ped_actions/synbody_idle426.fbx/synbody_idle426.fbx.usd", prim_path="/World/run")
-        add_reference_to_stage(usd_path="assets/ped_actions/synbody_walking426.fbx/synbody_walking426.fbx.usd", prim_path="/World/walk")
+        stage = omni.usd.get_context().get_stage()
+        if stage is None:
+            return
+
+        ped_actions_root = Path(URBANSIM_PATH) / "assets" / "ped_actions"
+        references = [
+            ("/World/run", ped_actions_root / "synbody_idle426.fbx" / "synbody_idle426.fbx.usd"),
+            ("/World/walk", ped_actions_root / "synbody_walking426.fbx" / "synbody_walking426.fbx.usd"),
+        ]
+        for prim_path, usd_path in references:
+            prim = stage.GetPrimAtPath(Sdf.Path(prim_path))
+            if prim and prim.IsValid():
+                continue
+            add_reference_to_stage(usd_path=str(usd_path.resolve()), prim_path=prim_path)
+
         timeline = omni.timeline.get_timeline_interface()
         timeline.set_start_time(0)
         timeline.set_end_time(1.1)

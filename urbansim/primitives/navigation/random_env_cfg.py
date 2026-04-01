@@ -1,5 +1,6 @@
 from __future__ import annotations
 from dataclasses import MISSING
+from pathlib import Path
 import torch
 import numpy as np
 import math
@@ -85,7 +86,7 @@ def illegal_contact_compat(env, threshold: float, sensor_cfg: SceneEntityCfg) ->
     )
 
 # Random path
-material_path = './assets/materials'
+material_path = str(Path(__file__).resolve().parents[3] / "assets" / "materials")
 
 walkable_material_path_list = [
     f'{material_path}/Ground/Small_Cobblestone.mdl',
@@ -164,7 +165,7 @@ class SceneCfg(UrbanSceneCfg):
         ),
         visual_material=sim_utils.MdlFileCfg(
             mdl_path=f"{ISAACLAB_NUCLEUS_DIR}/Materials/TilesMarbleSpiderWhiteBrickBondHoned/TilesMarbleSpiderWhiteBrickBondHoned.mdl",
-            project_uvw=False,
+            project_uvw=True,
             texture_scale=(0.25, 0.25),
         ),
         debug_vis=False,
@@ -202,10 +203,10 @@ class SceneCfg(UrbanSceneCfg):
         ) for i in range(4)
     ]
     terrain_walkable_material_list = [
-        sim_utils.MdlFileCfg(mdl_path=walkable_material_path_list[i], project_uvw=False, texture_scale=(1000.0, 1000.0)) for i in range(len(terrain_importer_walkable_list))
+        sim_utils.MdlFileCfg(mdl_path=walkable_material_path_list[i], project_uvw=True, texture_scale=(0.5, 0.5)) for i in range(len(terrain_importer_walkable_list))
     ]
     terrain_non_walkable_material_list = [
-        sim_utils.MdlFileCfg(mdl_path=non_walkable_material_path_list[i], project_uvw=False, texture_scale=(1000.0, 1000.0)) for i in range(len(terrain_non_walkable_list))
+        sim_utils.MdlFileCfg(mdl_path=non_walkable_material_path_list[i], project_uvw=True, texture_scale=(0.5, 0.5)) for i in range(len(terrain_non_walkable_list))
     ]
     
     # sensor
